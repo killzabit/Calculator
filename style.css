@@ -41,7 +41,7 @@ body {
     flex: 0 1 100%;
     border: 1px solid white;
     height: 20%;
-    font-size: 3vw;
+    font-size: 250%;
     margin-bottom: 5%;
     background-color: black;
     color: white;
@@ -115,6 +115,11 @@ body {
 }
 
 .operator {
+    color: red;
+    border-color: teal;
+}
+
+#equals {
     color: red;
     border-color: teal;
 }

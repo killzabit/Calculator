@@ -58,34 +58,40 @@ function theme_3() {
     document.querySelectorAll(".button").forEach((el) => {el.style.backgroundColor = "#31627C"})
 }
 
-let value1 = 0;
+let value1;
 let operator;
-let value2 = 0;
-let value3 = 0;
+let value2;
+let value3;
 //value storage below
  function storeOperatorAndVal1(btn) {
+    btn = btn.target
+    if (value1 == undefined) {
+        operator = btn.textContent;
+        console.log("this is the operator: " + operator)
+        value1 = document.getElementById("result").textContent;
+        console.log("this is value1:  " + value1);
 
-    if (value1 == 0){
-        value1 = document.getElementById("result").value;
-        value1 = Number(value1);
-        console.log("this is value 1: " + value1 + typeof value1)
-        operator = btn.target.textContent;
-        console.log(operator);
+    } else if ((value1 != undefined) && (value2 != undefined)) {
+        value2 = undefined
+        console.log("This is value2: " + value2)
 
-    } else{
-         operator = btn.target.textContent;
-         console.log(operator);
-         operation();
+    } else {
+        operation();
+        operator = btn.textContent;
+        console.log("this is the operator: " + operator)
+        value2 = undefined
+        console.log("This is value2: " + value2)
     }
-
+    counter = 0
 
 }
 
 function shrinkFontTextBox() {
-    let result = document.getElementById("result").value
+    let result = document.getElementById("result").textContent
     console.log(result.length)
     if (result.length >= 13) {
         document.getElementById("result").style.fontSize = "160%";
+
     } else {
         document.getElementById("result").style.fontSize = "250%";
     }
@@ -94,23 +100,31 @@ function shrinkFontTextBox() {
 
 //operator function
  function operation() {
-    if (value3 > 0){
-        document.getElementById("result").value = operations[operator](value2, value3);
-        console.log(operations[operator](value2, value3));
-        value3 = operations[operator](value2, value3)
-        console.log("this is value 3: " + value3)
-        
-    } else {
-        value2 = document.getElementById("result").value
-        value2 = Number(value2);
-        console.log("this is value 2: " + value2 +typeof value2)
-        document.getElementById("result").value = operations[operator](value1, value2);
-        console.log(operations[operator](value1, value2));
-        value3 = operations[operator](value1, value2);
-        console.log("this is value 3: " + value3)
+    if ((value2 == undefined) && (value3 == undefined)) {
+        value2 = document.getElementById("result").textContent
+        console.log("this is value2:  " + value2);
+        value2 = Number(value2)
+        value1 = Number(value1)
+        document.getElementById("result").textContent = operations[operator](value1, value2)
+        value3 = document.getElementById("result").textContent
+        console.log("this is value3:  " + value3);
 
+    } else if ((value2 == undefined) && (value3 != undefined)) {
+        value2 = document.getElementById("result").textContent
+        console.log("this is value2:  " + value2);
+        value2 = Number(value2)
+        value3 = Number(value3)
+        document.getElementById("result").textContent = operations[operator](value3, value2)
+        value3 = document.getElementById("result").textContent
+        console.log("this is value3:  " + value3);
+
+    } else if (value3 != undefined) {
+        value2 = Number(value2)
+        value3 = Number(value3)
+        document.getElementById("result").textContent = operations[operator](value3, value2)
+        value3 = document.getElementById("result").textContent
+        console.log("this is value3:  " + value3);
     }
-
 }
 
 //operation object/dictionary thing.
@@ -119,24 +133,30 @@ const operations = {
     '-': (a, b) => a - b,
     'X': (a, b) => a * b,
     '%': (a, b) => a % b,
-    '/': (a, b) => {(a = 0) || (b = 0) ? "undefined" : a / b}
+    '/': (a, b) => {((a = 0) || (b = 0)) ? document.getElementById("result").textContent = "undefined" : a / b}
 }
 
+let counter;
 //display button value in text box and disable decimal and resize text if too many chars
 function addButtonValue(btn) {
     btn = btn.target
 
-    if (document.getElementById("result").value == "") {
-        document.getElementById("result").value = btn.textContent;
-
+    if ((value2 == undefined) && (counter == 0) || ((value2 == undefined && (operator != undefined) && (counter == 0)))) {
+        document.getElementById("result").textContent = btn.textContent
+        counter += 1
     } else {
-        document.getElementById("result").value += btn.textContent;
+        document.getElementById("result").textContent += btn.textContent;
+
     }
 
+    //document.getElementById("result").textContent += btn.textContent;
 
-    if (document.getElementById("result").value.includes(".")) {
+    if (document.getElementById("result").textContent.includes(".")) {
         document.getElementById("decimal").disabled = true;
         
+    } else {
+        document.getElementById("decimal").disabled = false;
+
     }
 
     shrinkFontTextBox()
@@ -153,21 +173,23 @@ document.querySelectorAll(".numbers").forEach((number) => {number.addEventListen
 
 //resets ever'thang
 document.getElementById("clear").addEventListener("click", () => {
-    document.getElementById("result").value = ""
-    value1 = ""
-    vaule2 = ""
-    operator = ""
-    value3 = ""
+    document.getElementById("result").textContent = ""
+    value1 = undefined
+    value2 = undefined
+    value3 = undefined
+    operator = undefined
+    counter = 0
+    document.getElementById("result").textContent = "";
     document.getElementById("decimal").disabled = false;
 })
 
 //backspace event listener and function
 document.getElementById("back").addEventListener("click", () => {
-    let value = document.getElementById("result").value;
+    let value = document.getElementById("result").textContent;
     valueArray = value.split("");
     valueArray.pop();
     valueStr = valueArray.join("");
-    document.getElementById("result").value = valueStr;
+    document.getElementById("result").textContent = valueStr;
 })
 
 //stores the first vaule and operator

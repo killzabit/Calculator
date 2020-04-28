@@ -45,9 +45,8 @@ body {
     margin-bottom: 5%;
     background-color: black;
     color: white;
-    max-width: 98%;
-    text-align: right;
-
+    direction: rtl;
+    overflow: hidden;
 }
 
 #buttonContainer {

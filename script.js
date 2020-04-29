@@ -74,6 +74,8 @@ let value3;
     } else if ((value1 != undefined) && (value2 != undefined)) {
         value2 = undefined
         console.log("This is value2: " + value2)
+        operator = btn.textContent;
+        console.log("this is the operator: " + operator)
 
     } else {
         operation();
@@ -100,6 +102,10 @@ function shrinkFontTextBox() {
 
 //operator function
  function operation() {
+     if ((value1 == undefined) && (operator == undefined)) {
+        return
+     }
+
     if ((value2 == undefined) && (value3 == undefined)) {
         value2 = document.getElementById("result").textContent
         console.log("this is value2:  " + value2);
@@ -125,6 +131,7 @@ function shrinkFontTextBox() {
         value3 = document.getElementById("result").textContent
         console.log("this is value3:  " + value3);
     }
+    shrinkFontTextBox()
 }
 
 //operation object/dictionary thing.
@@ -133,7 +140,12 @@ const operations = {
     '-': (a, b) => a - b,
     'X': (a, b) => a * b,
     '%': (a, b) => a % b,
-    '/': (a, b) => {((a = 0) || (b = 0)) ? document.getElementById("result").textContent = "undefined" : a / b}
+    '/': (a, b) => {
+        if ((a == 0) || (b == 0)){
+            return "undefined"
+        } else {
+            return a / b;
+        }}
 }
 
 let counter;
@@ -161,6 +173,18 @@ function addButtonValue(btn) {
 
     shrinkFontTextBox()
 
+}
+
+const posOrNeg = () => {
+    let result = document.getElementById("result").textContent;
+
+    if (result > 0) {
+        document.getElementById("result").textContent = (-result)
+
+    } else {
+        document.getElementById("result").textContent = (+result)
+
+    }
 }
 
 //theme event listeners
@@ -197,3 +221,7 @@ document.querySelectorAll(".operator").forEach((btn) => {btn.addEventListener("c
 
 //operates on that thang
 document.getElementById("equals").addEventListener("click", operation)
+
+//positive or negative btn listener
+document.getElementById("posneg").addEventListener("click", posOrNeg)
+

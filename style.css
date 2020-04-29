@@ -45,7 +45,7 @@ body {
     margin-bottom: 5%;
     background-color: black;
     color: white;
-    direction: rtl;
+    /*direction: rtl; */
     overflow: hidden;
 }
 

@@ -2,7 +2,7 @@
 
 
 
-//chage these to class changes or something, it's ugly and takes up space this way
+//chage these to class changes or something, it's ugly and takes up space this way   -in the future-
 //these next three change the colors of the page and calculator.
 function theme_1() {
     document.body.style.background = "black"
@@ -61,46 +61,41 @@ function theme_3() {
 let value1;
 let operator;
 let value2;
-let value3;
-//value storage below
+let value3;//this one is the value after = is pressed, it's the result.
+
+//value and operator storage below, will run operation when needed. "btn" is the operator in this case.
+//the counter at the bottom is used to help update the screen and the function that uses it is further down.
  function storeOperatorAndVal1(btn) {
     btn = btn.target
     if (value1 == undefined) {
         operator = btn.textContent;
-        console.log("this is the operator: " + operator)
         value1 = document.getElementById("result").textContent;
-        console.log("this is value1:  " + value1);
 
     } else if ((value1 != undefined) && (value2 != undefined)) {
         value2 = undefined
-        console.log("This is value2: " + value2)
         operator = btn.textContent;
-        console.log("this is the operator: " + operator)
 
     } else {
         operation();
         operator = btn.textContent;
-        console.log("this is the operator: " + operator)
         value2 = undefined
-        console.log("This is value2: " + value2)
     }
     counter = 0
-
 }
 
+//this function shrinks the font size when it reaches 13 char long.
 function shrinkFontTextBox() {
     let result = document.getElementById("result").textContent
-    console.log(result.length)
     if (result.length >= 13) {
         document.getElementById("result").style.fontSize = "160%";
+
 
     } else {
         document.getElementById("result").style.fontSize = "250%";
     }
 }
 
-
-//operator function
+//this function runs the operation/calculation, it also stores value2 if it is not already stored.
  function operation() {
      if ((value1 == undefined) && (operator == undefined)) {
         return
@@ -108,33 +103,29 @@ function shrinkFontTextBox() {
 
     if ((value2 == undefined) && (value3 == undefined)) {
         value2 = document.getElementById("result").textContent
-        console.log("this is value2:  " + value2);
         value2 = Number(value2)
         value1 = Number(value1)
         document.getElementById("result").textContent = operations[operator](value1, value2)
         value3 = document.getElementById("result").textContent
-        console.log("this is value3:  " + value3);
 
     } else if ((value2 == undefined) && (value3 != undefined)) {
         value2 = document.getElementById("result").textContent
-        console.log("this is value2:  " + value2);
         value2 = Number(value2)
         value3 = Number(value3)
         document.getElementById("result").textContent = operations[operator](value3, value2)
         value3 = document.getElementById("result").textContent
-        console.log("this is value3:  " + value3);
 
     } else if (value3 != undefined) {
         value2 = Number(value2)
         value3 = Number(value3)
         document.getElementById("result").textContent = operations[operator](value3, value2)
         value3 = document.getElementById("result").textContent
-        console.log("this is value3:  " + value3);
     }
     shrinkFontTextBox()
 }
 
-//operation object/dictionary thing.
+//operation object/dictionary thing. Stores all of the operators that we'll need. Didn't create a new line here-
+// after if and else statements because I wanted to make it look more compact.
 const operations = {
     '+': (a, b) => a + b,
     '-': (a, b) => a - b,
@@ -148,20 +139,19 @@ const operations = {
         }}
 }
 
+//the counter is used for clearing the screen when you enter in a digit after you have just stored one.
 let counter;
 //display button value in text box and disable decimal and resize text if too many chars
 function addButtonValue(btn) {
     btn = btn.target
-
     if ((value2 == undefined) && (counter == 0) || ((value2 == undefined && (operator != undefined) && (counter == 0)))) {
         document.getElementById("result").textContent = btn.textContent
         counter += 1
+
     } else {
         document.getElementById("result").textContent += btn.textContent;
 
     }
-
-    //document.getElementById("result").textContent += btn.textContent;
 
     if (document.getElementById("result").textContent.includes(".")) {
         document.getElementById("decimal").disabled = true;
@@ -170,19 +160,18 @@ function addButtonValue(btn) {
         document.getElementById("decimal").disabled = false;
 
     }
-
     shrinkFontTextBox()
-
 }
 
+//changes number to negative or positive
 const posOrNeg = () => {
     let result = document.getElementById("result").textContent;
 
     if (result > 0) {
         document.getElementById("result").textContent = (-result)
 
-    } else {
-        document.getElementById("result").textContent = (+result)
+    } else if (result < 0) {
+        document.getElementById("result").textContent = Math.abs(result)
 
     }
 }
@@ -192,7 +181,7 @@ document.getElementById("Theme 1").addEventListener("change", theme_1)
 document.getElementById("Theme 2").addEventListener("change", theme_2)
 document.getElementById("Theme 3").addEventListener("change", theme_3)
 
-//registers numerical to textbox
+//registers button.textContent to textbox
 document.querySelectorAll(".numbers").forEach((number) => {number.addEventListener("click", addButtonValue)})
 
 //resets ever'thang
@@ -207,7 +196,7 @@ document.getElementById("clear").addEventListener("click", () => {
     document.getElementById("decimal").disabled = false;
 })
 
-//backspace event listener and function
+//backspace event listener and function.  C-C-C-C-COMBO BREAKER!!!
 document.getElementById("back").addEventListener("click", () => {
     let value = document.getElementById("result").textContent;
     valueArray = value.split("");
@@ -224,4 +213,3 @@ document.getElementById("equals").addEventListener("click", operation)
 
 //positive or negative btn listener
 document.getElementById("posneg").addEventListener("click", posOrNeg)
-

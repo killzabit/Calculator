@@ -40,13 +40,14 @@ body {
     display: flex;
     flex: 0 1 100%;
     border: 1px solid white;
-    height: 20%;
+    height: 13%;
     font-size: 250%;
     margin-bottom: 5%;
     background-color: black;
     color: white;
-    /*direction: rtl; */
     overflow: hidden;
+    align-items: flex-start;
+    justify-content: flex-end;
 }
 
 #buttonContainer {
